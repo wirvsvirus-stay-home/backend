@@ -2,7 +2,7 @@ version: '3'
 
 services:
   web:
-    build: ../../Dockerfile
+    build: ../../
     container_name: de-cguard
     networks:
       - docker
