@@ -21,7 +21,7 @@ module.exports = app => {
     });
 
     app.get('/users?unprotected=1', function (req, res) {
-        User.findAll({
+        models['user'].findAll({
             where: {
                 baseStatus: 'UNPROTECTED',
             }
@@ -35,7 +35,7 @@ module.exports = app => {
     });
 
     app.get('/users/:deviceid', function (req, res){
-        User.findAll({
+        models['user'].findAll({
             where: {
                 deviceId: req.params.deviceId
             }
@@ -55,7 +55,11 @@ module.exports = app => {
 
     app.put('/users/:deviceid', function(req, res){
         for(element in req.body){
-            
+            models['user'].update({element: req.body[element]},{
+                where: {
+                    deviceId: req.params.deviceId
+                }
+            });
         }
         res.send({
             "status": 200,
