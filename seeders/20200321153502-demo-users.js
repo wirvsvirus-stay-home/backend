@@ -40,6 +40,18 @@ module.exports = {
       radius: 100,
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      id: uuidV4(),
+      username: 'Pink Mouse',
+      country: 'DE',
+      score: 750,
+      rank: 2,
+      baseStatus: 'UNPROTECTED',
+      latitude: 37.285951,
+      longitude: -121.936650,
+      radius: 100,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }])
   },
 

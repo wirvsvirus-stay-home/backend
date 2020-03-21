@@ -1,4 +1,4 @@
-const models = require('../models');
+const db = require('../models');
 const usernameGenerator = require('../services/username-generator.js');
 
 module.exports = app => {
@@ -9,7 +9,7 @@ module.exports = app => {
 
             // Benutzer erstellen
             .then(username  => {
-                return models['user'].create({
+                return db['user'].create({
                     deviceId: req.body.deviceId,
                     username: username,
                     country: req.body.country,
@@ -20,7 +20,7 @@ module.exports = app => {
             })
 
             // Benutzer laden
-            .then(({ id }) => models['user'].findByPk(id))
+            .then(({ id }) => db['user'].findByPk(id))
 
             // Benutzer zurückgeben
             .then(user => res.status(201).send({
@@ -30,32 +30,45 @@ module.exports = app => {
             }))
 
             // Error-Handling
-            .catch(reason => {
-                res.status(500).json({
-                    status: 500,
-                    message: "Internal Server Error",
-                    reason
-                })
-            })
+            .catch(reason => res.status(500).json({
+                status: 500,
+                message: "Internal Server Error",
+                reason
+            }));
 
     });
 
-    app.get('/users?unprotected=1', function (req, res) {
-        models['user'].findAll({
-            where: {
-                baseStatus: 'UNPROTECTED',
-            }
-        }).then(users => {
-            console.log(users);
-        });
-        res.send({
-            "deviceId": "1234-5678-6451",
-            "username": "alex"
-        });
+    app.get('/users', function (req, res) {
+        const { unprotected } = req.query;
+
+        // Pruefen ob `unprotected` Query-Param angegeben wurde
+        if (unprotected == null) {
+            res.status(400).json({
+                status: 400,
+                message: "Bad Request"
+            });
+            return;
+        }
+
+        // Benutzer laden
+        db['user'].findOne({
+            where: { baseStatus: 'UNPROTECTED' },
+            order: db.sequelize.random()
+        })
+
+            // Benutzer zurückgeben
+            .then(user => res.json(user))
+
+            // Error-Handling
+            .catch(reason => res.status(500).json({
+                status: 500,
+                message: 'Internal Server Error',
+                reason
+            }));
     });
 
     app.get('/users/:deviceid', function (req, res){
-        models['user'].findAll({
+        db['user'].findAll({
             where: {
                 deviceId: req.params.deviceId
             }
@@ -75,7 +88,7 @@ module.exports = app => {
 
     app.put('/users/:deviceid', function(req, res){
         for(element in req.body){
-            models['user'].update({element: req.body[element]},{
+            db['user'].update({element: req.body[element]},{
                 where: {
                     deviceId: req.params.deviceId
                 }
