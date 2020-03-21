@@ -4,8 +4,8 @@
   "description": "Server backend for stay home game",
   "main": "index.js",
   "scripts": {
-    "db:init": "./node_modules/.bin/sequelize-cli db:migrate",
-    "db:reset": "./node_modules/.bin/sequelize-cli db:migrate:undo:all && ./node_modules/.bin/sequelize-cli db:migrate",
+    "db:init": "./node_modules/.bin/sequelize-cli db:migrate && ./node_modules/.bin/sequelize-cli db:seed:all",
+    "db:reset": "./node_modules/.bin/sequelize-cli db:migrate:undo:all && ./node_modules/.bin/sequelize-cli db:migrate && ./node_modules/.bin/sequelize-cli db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
