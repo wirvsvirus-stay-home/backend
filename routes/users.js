@@ -6,34 +6,19 @@ module.exports = app => {
     app.post('/users', function (req, res){
         sequelize.sync()
             .then(() => User.create({
-                deviceId: '1234-5678-1234',
-                username: 'janedoe',
-                country: 'DE',
-                score: 800,
-                rank: 3,
-                baseStatus: 'PROTECTED',
-                latitude: "37.285951",
-                longitude: "-121.936650",
-                radius: 100
+                deviceId: req.body.deviceId,
+                username: req.body.username,
+                country: req.body.country,
+                score: req.body.score,
+                rank: req.body.rank,
+                baseStatus: req.body.baseStatus,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude,
+                radius: req.body.radius
             }))
             .then(jane => {
                 console.log(jane.toJSON());
             });
-        //req
-        // {
-        //     "deviceId": "1234-5678-9012",
-        //     "username": "alex",
-        //     "countryCode": "DE",
-        //     "latitude": 37.285951,
-        //     "longitude": -121.936650,
-        //     "radius": 100
-        // }
-        //res
-        // {
-        //     "status": 201,
-        //     "message": "Created"
-        // }
-        console.log(req.body);
         res.send({
             "status": 201,
             "message": "created"
@@ -41,42 +26,46 @@ module.exports = app => {
     });
 
     app.get('/users?unprotected=1', function (req, res) {
-        res.send(__filename)
-        // {
-        //     "deviceId": "1234-5678-6451",
-        //     "username": "alex"
-        // }
+        User.findAll({
+            where: {
+                baseStatus: 'UNPROTECTED',
+            }
+        }).then(users => {
+            console.log(users);
+        });
+        res.send({
+            "deviceId": "1234-5678-6451",
+            "username": "alex"
+        });
     });
 
     app.get('/users/:deviceid', function (req, res){
-        res.send(__filename)
-        // {
-        //     "username": "alex",
-        //     "rank": 2,
-        //     "score": 950,
-        //     "countryCode": "DE",
-        //     "latitude": 37.285951,
-        //     "longitude": -121.936650,
-        //     "radius": 100,
-        //     "baseStatus": "PROTECTED"
-        // }
+        User.findAll({
+            where: {
+                deviceId: req.params.deviceId
+            }
+        }).then(user => {
+            res.send({
+                username: user.username,
+                country: user.country,
+                score: user.score,
+                rank: user.rank,
+                baseStatus: user.baseStatus,
+                latitude: user.latitude,
+                longitude: user.longitude,
+                radius: user.radius
+            });
+        });
     });
 
     app.put('/users/:deviceid', function(req, res){
-        res.send(__filename)
-        //req
-        // {
-        //     "username": "kim",
-        //     "countryCode": "IT",
-        //     "rank": 2,
-        //     "score": 850,
-        //     "baseStatus": "PROTECTED"
-        // }
-        //res
-        // {
-        //     "status": 200,
-        //     "message": "OK"
-        // }
+        for(element in req.body){
+            
+        }
+        res.send({
+            "status": 200,
+            "message": "OK"
+        })
     });
 
 };
