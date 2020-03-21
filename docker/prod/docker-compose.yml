@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  web:
+    build: ../../Dockerfile
+    container_name: de-cguard
+    networks:
+      - docker
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.web-decguard.entrypoints=websecure
+      - traefik.http.routers.web-decguard.rule=Host(`cguard.de`, `www.cguard.de`)
+      - traefik.http.routers.web-decguard.tls.certresolver=le
+      - traefik.http.services.web-decguard.loadbalancer.server.port=3000
+    restart: always
+
+networks:
+  docker:
+    external:
+      name: docker
