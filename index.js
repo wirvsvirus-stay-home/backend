@@ -4,6 +4,7 @@ const app = express();
 app.use(express.json());
 
 // routing
+require('./routes/dev')(app);
 require('./routes/i18n')(app);
 require('./routes/leaders')(app);
 require('./routes/users')(app);
