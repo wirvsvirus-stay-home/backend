@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 // routing
 require('./routes/i18n')(app);
 require('./routes/leaders')(app);

@@ -1,7 +1,7 @@
 module.exports = app => {
 
     app.post('/users', function (req, res){
-        res.send(__filename)
+        //res.send(__filename)
         //req
         // {
         //     "deviceId": "1234-5678-9012",
@@ -16,6 +16,11 @@ module.exports = app => {
         //     "status": 201,
         //     "message": "Created"
         // }
+        console.log(req.body);
+        res.send({
+            "status": 201,
+            "message": "created"
+        })
     });
 
     app.get('/users?unprotected=1', function (req, res) {
@@ -26,7 +31,7 @@ module.exports = app => {
         // }
     });
 
-    app.get('/users/:[deviceid]', function (req, res){
+    app.get('/users/:deviceid', function (req, res){
         res.send(__filename)
         // {
         //     "username": "alex",
@@ -40,7 +45,7 @@ module.exports = app => {
         // }
     });
 
-    app.put('/users/:[deviceid]', function(req, res){
+    app.put('/users/:deviceid', function(req, res){
         res.send(__filename)
         //req
         // {
