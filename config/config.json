@@ -15,9 +15,9 @@
   },
   "production": {
     "username": "root",
-    "password": "password",
+    "password": "WriZxnxK2d756q29NA2WGrR3",
     "database": "wvv",
-    "host": "127.0.0.1",
+    "host": "db",
     "dialect": "mariadb"
   }
 }

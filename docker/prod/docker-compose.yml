@@ -5,6 +5,7 @@ services:
     build: ../../
     container_name: de-cguard
     networks:
+      - default
       - docker
     labels:
       - traefik.enable=true
@@ -12,9 +13,20 @@ services:
       - traefik.http.routers.web-decguard.rule=Host(`cguard.de`, `www.cguard.de`)
       - traefik.http.routers.web-decguard.tls.certresolver=le
       - traefik.http.services.web-decguard.loadbalancer.server.port=3000
+    depends_on:
+      - db
     restart: always
+  db:
+    image: mariadb:latest
+    container_name: de-cguard_db
+    networks:
+      - default
+    environment:
+      - MYSQL_ROOT_PASSWORD=WriZxnxK2d756q29NA2WGrR3
+      - MYSQL_DATABASE=wvv
 
 networks:
+  default:
   docker:
     external:
       name: docker
