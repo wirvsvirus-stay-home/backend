@@ -52,6 +52,7 @@ module.exports = app => {
 
         // Benutzer laden
         db['user'].findOne({
+            attributes: ['id', 'username', 'score', 'rank'],
             where: { baseStatus: 'UNPROTECTED' },
             order: db.sequelize.random()
         })
