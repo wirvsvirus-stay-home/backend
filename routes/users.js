@@ -1,7 +1,24 @@
+const sequelize = require('../services/sequelize');
+const User = require('../models/User');
+
 module.exports = app => {
 
     app.post('/users', function (req, res){
-        //res.send(__filename)
+        sequelize.sync()
+            .then(() => User.create({
+                deviceId: '1234-5678-1234',
+                username: 'janedoe',
+                country: 'DE',
+                score: 800,
+                rank: 3,
+                baseStatus: 'PROTECTED',
+                latitude: "37.285951",
+                longitude: "-121.936650",
+                radius: 100
+            }))
+            .then(jane => {
+                console.log(jane.toJSON());
+            });
         //req
         // {
         //     "deviceId": "1234-5678-9012",
