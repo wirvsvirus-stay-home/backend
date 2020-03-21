@@ -1,24 +1,19 @@
-const sequelize = require('../services/sequelize');
-const User = require('../models/User');
+const models = require('../models');
 
 module.exports = app => {
 
     app.post('/users', function (req, res){
-        sequelize.sync()
-            .then(() => User.create({
-                deviceId: req.body.deviceId,
-                username: req.body.username,
-                country: req.body.country,
-                score: req.body.score,
-                rank: req.body.rank,
-                baseStatus: req.body.baseStatus,
-                latitude: req.body.latitude,
-                longitude: req.body.longitude,
-                radius: req.body.radius
-            }))
-            .then(jane => {
-                console.log(jane.toJSON());
-            });
+        models['user'].create({
+            deviceId: req.body.deviceId,
+            username: req.body.username,
+            country: req.body.country,
+            score: req.body.score,
+            rank: req.body.rank,
+            baseStatus: req.body.baseStatus,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
+            radius: req.body.radius
+        });
         res.send({
             "status": 201,
             "message": "created"
