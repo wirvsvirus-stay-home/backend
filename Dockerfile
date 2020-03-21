@@ -5,9 +5,7 @@ ENV NODE_ENV production
 
 COPY ./ /app/
 
-RUN npm install \
-    && npm run db:init
-
+RUN npm install
 EXPOSE 3000
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "app:reset:start"]
