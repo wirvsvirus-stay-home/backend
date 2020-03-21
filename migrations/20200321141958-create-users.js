@@ -5,13 +5,8 @@ module.exports = {
     return queryInterface.createTable('users', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      deviceId: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.UUID
       },
       username: {
         type: Sequelize.STRING(64),
@@ -53,10 +48,6 @@ module.exports = {
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     })
-        .then(() => queryInterface.addIndex('users', ['deviceId'], {
-          name: 'device_ids',
-          unique: true
-        }))
 
         .then(() =>  queryInterface.addIndex('users', ['username'], { name: 'usenames' }))
         .then(() =>  queryInterface.addIndex('users', ['country'], { name: 'countries' }))
