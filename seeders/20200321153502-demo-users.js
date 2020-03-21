@@ -1,11 +1,9 @@
 'use strict';
 
-const { v4: uuidV4 } = require('uuid');
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [{
-      id: uuidV4(),
+      id: '16063e10-de04-4c1b-8124-8a7dd13b61d6',
       username: 'Red Elephant',
       country: 'DE',
       score: 850,
@@ -17,7 +15,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      id: uuidV4(),
+      id: '3f6ffbc8-2648-4b93-a132-667ef48a1138',
       username: 'Pink Dog',
       country: 'IT',
       score: 750,
@@ -29,7 +27,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      id: uuidV4(),
+      id: '6000f592-f201-4719-8d5d-f46b03ac48ba',
       username: 'Yellow Cat',
       country: 'DE',
       score: 950,
@@ -41,7 +39,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      id: uuidV4(),
+      id: 'd1053640-225d-44fd-9d16-572889052979',
       username: 'Pink Mouse',
       country: 'DE',
       score: 750,

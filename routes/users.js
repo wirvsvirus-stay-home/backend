@@ -1,4 +1,5 @@
 const db = require('../models');
+const { internalServerError } = require('../utils/http');
 const usernameGenerator = require('../services/username-generator.js');
 
 module.exports = app => {
@@ -30,11 +31,7 @@ module.exports = app => {
             }))
 
             // Error-Handling
-            .catch(reason => res.status(500).json({
-                status: 500,
-                message: "Internal Server Error",
-                reason
-            }));
+            .catch(reason => internalServerError(res, reason));
 
     });
 
@@ -61,30 +58,27 @@ module.exports = app => {
             .then(user => res.json(user))
 
             // Error-Handling
-            .catch(reason => res.status(500).json({
-                status: 500,
-                message: 'Internal Server Error',
-                reason
-            }));
+            .catch(reason => internalServerError(res, reason));
     });
 
-    app.get('/users/:deviceid', function (req, res){
-        db['user'].findAll({
-            where: {
-                deviceId: req.params.deviceId
-            }
-        }).then(user => {
-            res.send({
-                username: user.username,
-                country: user.country,
-                score: user.score,
-                rank: user.rank,
-                baseStatus: user.baseStatus,
-                latitude: user.latitude,
-                longitude: user.longitude,
-                radius: user.radius
-            });
-        });
+    app.get('/users/:id', function (req, res) {
+        // Benutzer laden
+        db['user'].findByPk(req.params.id)
+
+            // Benutzer zurückgeben
+            .then(user => {
+                if (user === null) {
+                    res.status(404).json({
+                        status: 404,
+                        message: 'Not Found'
+                    })
+                } else {
+                    res.json(user)
+                }
+            })
+
+            // Errorhandling
+            .catch(reason => internalServerError(res, reason))
     });
 
     app.put('/users/:deviceid', function(req, res){
