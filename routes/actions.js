@@ -1,3 +1,4 @@
+const moment = require('moment');
 const R = require('ramda');
 const { Op } = require('sequelize');
 const db = require('../models');
@@ -23,6 +24,30 @@ module.exports = app => {
         if (R.isNil(user)) {
             notFound(res);
             return;
+        }
+
+        // Letzten Check-In laden
+        const lastCheckIn = await db['action'].findOne({
+            where: {
+                userId: userId,
+                type: 'CHECK_IN',
+            },
+            order: [
+                [ 'createdAt', 'DESC' ]
+            ]
+        });
+
+        // Pruefen ob mindestst eine Stunde seit dem letzten Call vergangen ist
+        if (R.is(Object, lastCheckIn)) {
+            const minDiff = 3600;
+            const diffToLast = moment().diff(lastCheckIn.createdAt, 'seconds');
+            if (diffToLast < minDiff) {
+                res.status(423).json({
+                    status: 423,
+                    message: `Locked for ${minDiff - diffToLast} seconds`,
+                });
+                return;
+            }
         }
 
         // Action erstellen
