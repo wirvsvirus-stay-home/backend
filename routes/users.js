@@ -1,18 +1,17 @@
 const R = require('ramda');
 const db = require('../models');
 const { internalServerError, notFound } = require('../utils/http');
-const { create: createUsername } = require('../utils/username.js');
+const create_username = require('../utils/username_generator.js');
 
 module.exports = app => {
 
     app.post('/users', (req, res) => {
         // Username erstellen
-        createUsername()
+        create_username()
 
             // Benutzer erstellen
             .then(username  => {
                 return db['user'].create({
-                    deviceId: req.body.deviceId,
                     username: username,
                     country: req.body.country,
                     latitude: req.body.latitude,
@@ -20,9 +19,6 @@ module.exports = app => {
                     radius: req.body.radius
                 })
             })
-
-            // Benutzer laden
-            .then(({ id }) => db['user'].findByPk(id))
 
             // Benutzer zurückgeben
             .then(user => res.status(201).send({

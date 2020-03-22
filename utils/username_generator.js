@@ -364,28 +364,26 @@ const colors = [
     'Yellow'
 ];
 
-module.exports = {
+async function generate() {
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const animal = animals[Math.floor(Math.random() * animals.length)];
+    const username = `${color} ${animal}`;
 
-    async create() {
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const animal = animals[Math.floor(Math.random() * animals.length)];
-        const username = `${color} ${animal}`;
-
-        // Preufen ob Benutzername noch länger als 15 Zeichen ist
-        if (username.length > 15) {
-            return await this.create();
-        }
-
-        // Pruefen ob Benutzername bereits vergeben
-        const alreadyExists = await models['user'].count({
-            where: { username }
-        }) > 0;
-
-        if (alreadyExists) {
-            return await this.create();
-        }
-
-        return username;
+    // Preufen ob Benutzername noch länger als 15 Zeichen ist
+    if (username.length > 15) {
+        return await generate();
     }
 
-};
+    // Pruefen ob Benutzername bereits vergeben
+    const alreadyExists = await models['user'].count({
+        where: { username }
+    }) > 0;
+
+    if (alreadyExists) {
+        return await generate();
+    }
+
+    return username;
+}
+
+module.exports = generate;
