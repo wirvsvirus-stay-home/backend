@@ -3,6 +3,7 @@ version: '3'
 services:
   web:
     build: ../../
+    image: wvv/backend:latest
     container_name: de-cguard_backend
     networks:
       - default
