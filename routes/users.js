@@ -100,9 +100,7 @@ module.exports = app => {
         // Score-History laden
         db['action'].findAll({
             where: { userId: user.id },
-            order: [
-                [ 'createdAt', 'DESC' ]
-            ],
+            order: [ [ 'createdAt', 'DESC' ] ],
             limit: 20
         })
 
