@@ -87,4 +87,32 @@ module.exports = app => {
             .catch(reason => internalServerError(res, reason));
     });
 
+    app.get('/users/:id/history', async (req, res) => {
+        // Benutzer laden
+        const user = await db['user'].findByPk(req.params.id);
+
+        // Pruefen ob Benutzer existiert
+        if (R.isNil(user)) {
+            notFound(res);
+            return
+        }
+
+        // Score-History laden
+        db['action'].findAll({
+            where: { userId: user.id },
+            order: [
+                [ 'createdAt', 'DESC' ]
+            ],
+            limit: 20
+        })
+
+            // History zurückgeben
+            .then(actions => res.json({
+                content: actions
+            }))
+
+            // Error-Handling
+            .catch(reason => internalServerError(res, reason));
+    });
+
 };
