@@ -4,7 +4,7 @@ services:
   web:
     build: ../../
     image: wvv/backend:latest
-    container_name: de-cguard_backend
+    container_name: de-cguard-backend
     networks:
       - default
       - docker
@@ -22,7 +22,7 @@ services:
     restart: always
   db:
     image: mariadb:latest
-    container_name: de-cguard_backend_db
+    container_name: de-cguard-backend_db
     networks:
       - default
     environment:
