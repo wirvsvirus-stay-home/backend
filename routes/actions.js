@@ -1,4 +1,5 @@
 const R = require('ramda');
+const { Op } = require('sequelize');
 const db = require('../models');
 const { addToScore } = require('../utils/user');
 const { internalServerError, notFound } = require('../utils/http');
@@ -48,13 +49,12 @@ module.exports = app => {
             .catch(reason => internalServerError(res, reason));
     });
 
-    app.post('/actions/attack/:userId', async (req, res) => {
-        // Benutzer-IDs des Attackers und des Targets holen
+    app.post('/actions/attack', async (req, res) => {
+        // User-ID des Attackers holen
         const attackerUserId = req.headers['x-user-id'];
-        const targetUserId = req.params.userId;
 
-        // Pruefen ob User-IDs angegeben wurden
-        if (R.isNil(attackerUserId) || R.isNil(targetUserId)) {
+        // Pruefen ob User-ID angegeben wurden
+        if (R.isNil(attackerUserId)) {
             notFound(res);
             return;
         }
@@ -78,34 +78,33 @@ module.exports = app => {
         }
 
         // Target-User laden
-        const targetUser = await db['user'].findByPk(targetUserId);
-
-        // Pruefen ob Benutzer existieren
-        if (R.isNil(targetUser)) {
-            notFound(res);
-            return;
-        }
-
-        // Pruefen ob Target `UNPROTECTED` ist
-        if (targetUser.baseStatus !== 'UNPROTECTED') {
-            res.status(423).json({
-                status: 423,
-                message: 'Locked'
-            });
-            return;
-        }
+        const targetUser = await db['user'].findOne({
+            where: {
+                baseStatus: 'UNPROTECTED',
+                rank: { [Op.gte]: 1 },
+                score: { [Op.gt]: 0 },
+            },
+            order: db.sequelize.random(),
+        });
 
         // Attacker ein Ticket abziehen
         attackerUser.tickets -= 3;
 
-        // Attacker 100 Punkte hinzufügen, Target 100 Punkte abziehen
-        addToScore(attackerUser, 100);
-        addToScore(targetUser, -100);
+        // Bonus ermitteln (100 wenn noch unproteced Bases existieren; 200 wenn nicht)
+        const bonus = R.isNil(targetUser) ? 200 : 100;
+
+        // Attacker 100 oder 200 (wenn es keine unprotected Base gibt) Punkte hinzufügen
+        addToScore(attackerUser, bonus);
+
+        // ggf. Target 100 abziehen
+        if (R.is(Object, targetUser)) {
+            addToScore(targetUser, -100);
+        }
 
         // Action für Attacker erstellen
         db['action'].create({
             type: 'ATTACK',
-            amount: 100,
+            amount: bonus,
             userId: attackerUserId
         })
 
@@ -113,17 +112,20 @@ module.exports = app => {
             .then(action => res.status(201).json({
                 status: 201,
                 message: 'CREATED',
-                user: action
+                user: R.is(Object, targetUser) ? { username: targetUser.username } : null,
+                action
             }))
 
             .catch(reason => internalServerError(res, reason));
 
-        // Action für Target erstellen
-        db['action'].create({
-            type: 'ATTACK',
-            amount: -100,
-            userId: targetUserId
-        });
+        // ggf. Action für Target erstellen
+        if (R.is(Object, targetUser)) {
+            db['action'].create({
+                type: 'ATTACK',
+                amount: -100,
+                userId: targetUser.id
+            });
+        }
     });
 
 };
