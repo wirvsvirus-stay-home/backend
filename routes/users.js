@@ -35,32 +35,6 @@ module.exports = app => {
             .catch(reason => internalServerError(res, reason));
     });
 
-    app.get('/users', function (req, res) {
-        const { unprotected } = req.query;
-
-        // Pruefen ob `unprotected` Query-Param angegeben wurde
-        if (unprotected == null) {
-            res.status(400).json({
-                status: 400,
-                message: "Bad Request"
-            });
-            return;
-        }
-
-        // Benutzer laden
-        db['user'].findOne({
-            attributes: ['id', 'username', 'score', 'rank'],
-            where: { baseStatus: 'UNPROTECTED' },
-            order: db.sequelize.random()
-        })
-
-            // Benutzer zurückgeben
-            .then(user => res.json(user))
-
-            // Error-Handling
-            .catch(reason => internalServerError(res, reason));
-    });
-
     app.get('/users/:id', function (req, res) {
         // Benutzer laden
         db['user'].findByPk(req.params.id)
@@ -77,8 +51,6 @@ module.exports = app => {
             // Errorhandling
             .catch(reason => internalServerError(res, reason))
     });
-
-
 
     app.put('/users/:id', async (req, res) => {
         // Benutzer laden
