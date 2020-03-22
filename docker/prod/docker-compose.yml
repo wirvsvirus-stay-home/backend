@@ -12,7 +12,7 @@ services:
       - traefik.http.middlewares.web-decguardbackend-stripprefix.stripprefix.prefixes=/api/v1
       - traefik.http.middlewares.web-decguardbackend-headers.headers.accessControlAllowOrigin=*
       - traefik.http.routers.web-decguardbackend.entrypoints=websecure
-      - traefik.http.routers.web-decguardbackend.middlewares=de-decguardbackend-stripprefix,web-decguardbackend-headers
+      - traefik.http.routers.web-decguardbackend.middlewares=web-decguardbackend-stripprefix,web-decguardbackend-headers
       - traefik.http.routers.web-decguardbackend.rule=Host(`cguard.de`, `www.cguard.de`) && PathPrefix(`/api/v1/`)
       - traefik.http.routers.web-decguardbackend.tls.certresolver=le
       - traefik.http.services.backend-decguardbackend.loadbalancer.server.port=3000
