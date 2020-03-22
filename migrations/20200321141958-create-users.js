@@ -45,6 +45,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 100
       },
+      tickets: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     })

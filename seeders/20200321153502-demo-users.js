@@ -12,6 +12,7 @@ module.exports = {
       latitude: 37.285951,
       longitude: -121.936650,
       radius: 100,
+      tickets: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -24,6 +25,7 @@ module.exports = {
       latitude: 37.285951,
       longitude: -121.936650,
       radius: 100,
+      tickets: 0,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -36,6 +38,7 @@ module.exports = {
       latitude: 37.285951,
       longitude: -121.936650,
       radius: 100,
+      tickets: 0,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -48,6 +51,7 @@ module.exports = {
       latitude: 37.285951,
       longitude: -121.936650,
       radius: 100,
+      tickets: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -60,6 +64,7 @@ module.exports = {
       latitude: 37.285951,
       longitude: -121.936650,
       radius: 100,
+      tickets: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }])

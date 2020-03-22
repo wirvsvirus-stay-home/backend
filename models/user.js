@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         country: DataTypes.STRING(8),
         score: DataTypes.INTEGER,
         rank: DataTypes.INTEGER,
+        tickets: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         baseStatus: {
             type: DataTypes.ENUM,
             values: ['PROTECTED', 'ABANDONED', 'UNPROTECTED']
