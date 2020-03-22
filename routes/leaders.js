@@ -1,20 +1,25 @@
-const models = require('../models');
+'use strict';
+const db = require('../models');
+const { internalServerError } = require('../utils/http');
 
 module.exports = app => {
 
-    app.get('/leaders/:rank', function (req, res){
-        models['user'].findAll({
-            where: {
-                rank: req.params.rank
-            },
-            attributes: ['username', 'score', 'country'],
-            order:[
-                sequelize.fn('max', sequelize.col('score'), 'DESC')
+    app.get('/leaders', function (req, res) {
+        // Benutzer laden
+        db['user'].findAll({
+            attributes: ['username', 'rank', 'score', 'country'],
+            order: [
+                [ 'rank', 'DESC' ],
+                [ 'score', 'DESC' ]
             ],
-            limit: 20            
-        }).then(leaders => {
-            res.send(JSON.stringify(leaders));
-        });
+            limit: 10
+        })
+
+            // Benutzer zurückgeben
+            .then(users => res.json({content: users}))
+
+            // Error-Handling
+            .catch(reason => internalServerError(res, reason))
     });
 
 };
