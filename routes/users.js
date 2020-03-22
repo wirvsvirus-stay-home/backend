@@ -1,3 +1,4 @@
+const R = require('ramda');
 const db = require('../models');
 const { internalServerError, notFound } = require('../utils/http');
 const { create: createUsername } = require('../utils/username.js');
@@ -76,6 +77,8 @@ module.exports = app => {
             // Errorhandling
             .catch(reason => internalServerError(res, reason))
     });
+
+
 
     app.put('/users/:id', async (req, res) => {
         // Benutzer laden

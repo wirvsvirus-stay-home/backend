@@ -10,7 +10,7 @@ module.exports = {
       },
       type: {
         type: Sequelize.ENUM,
-        values: ['CHECK_IN'],
+        values: ['CHECK_IN', 'ATTACK'],
         allowNull: false,
       },
       userId: {
