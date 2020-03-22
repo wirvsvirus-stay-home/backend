@@ -44,7 +44,8 @@ module.exports = app => {
             if (diffToLast < minDiff) {
                 res.status(423).json({
                     status: 423,
-                    message: `Locked for ${minDiff - diffToLast} seconds`,
+                    message: `Locked`,
+                    secondsToWait: minDiff - diffToLast
                 });
                 return;
             }
