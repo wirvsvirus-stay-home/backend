@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-#curl -H "Content-Type: application/json" -d '{"deviceId": "1234-5678-1234", "username": "janedoe", "country": "DE", "score": 800, "rank": 3, "baseStatus": "PROTECTED", "latitude": "37.285951", "longitude": "-121.936650", "radius": 100}' http://localhost:3000/users
-curl -X PUT -H "Content-Type: application/json" -d '{"score": 1200}' http://localhost:3000/users/:deviceId=1234-5678-1234
