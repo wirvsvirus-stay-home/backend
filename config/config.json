@@ -4,20 +4,29 @@
     "password": "password",
     "database": "wvv",
     "host": "127.0.0.1",
-    "dialect": "mariadb"
+    "dialect": "mariadb",
+    "dialectOptions": {
+      "timezone": "Etc/GMT+1"
+    }
   },
   "test": {
     "username": "root",
     "password": "password",
     "database": "wvv",
     "host": "127.0.0.1",
-    "dialect": "mariadb"
+    "dialect": "mariadb",
+    "dialectOptions": {
+      "timezone": "Etc/GMT+1"
+    }
   },
   "production": {
     "username": "root",
     "password": "WriZxnxK2d756q29NA2WGrR3",
     "database": "wvv",
     "host": "db",
-    "dialect": "mariadb"
+    "dialect": "mariadb",
+    "dialectOptions": {
+      "timezone": "Etc/GMT+1"
+    }
   }
 }
