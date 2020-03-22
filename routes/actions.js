@@ -80,9 +80,12 @@ module.exports = app => {
         // Target-User laden
         const targetUser = await db['user'].findOne({
             where: {
+                id: { [Op.ne]: attackerUserId },
                 baseStatus: 'UNPROTECTED',
-                rank: { [Op.gte]: 1 },
-                score: { [Op.gt]: 0 },
+                [Op.or]: {
+                    rank: { [Op.gt]: 1 },
+                    score: { [Op.gt]: 0 },
+                }
             },
             order: db.sequelize.random(),
         });
