@@ -29,7 +29,7 @@ module.exports = {
       baseStatus: {
         type: Sequelize.ENUM,
         allowNull: false,
-        values: ['PROTECTED', 'UNPROTECTED'],
+        values: ['PROTECTED', 'ABANDONED', 'UNPROTECTED'],
         defaultValue: 'PROTECTED'
       },
       latitude: {

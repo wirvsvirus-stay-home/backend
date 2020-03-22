@@ -50,6 +50,18 @@ module.exports = {
       radius: 100,
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      id: 'e1453640-225d-44fd-9d16-572889055517',
+      username: 'Grey Dolphin',
+      country: 'DE',
+      score: 650,
+      rank: 3,
+      baseStatus: 'ABANDONED',
+      latitude: 37.285951,
+      longitude: -121.936650,
+      radius: 100,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }])
   },
 

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         rank: DataTypes.INTEGER,
         baseStatus: {
             type: DataTypes.ENUM,
-            values: ['PROTECTED', 'UNPROTECTED']
+            values: ['PROTECTED', 'ABANDONED', 'UNPROTECTED']
         },
         latitude: DataTypes.STRING,
         longitude: DataTypes.STRING,
