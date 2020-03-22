@@ -1,12 +1,12 @@
 const db = require('../models');
 const { internalServerError, notFound } = require('../utils/http');
-const usernameGenerator = require('../services/username-generator.js');
+const { create: createUsername } = require('../utils/username.js');
 
 module.exports = app => {
 
     app.post('/users', (req, res) => {
         // Username erstellen
-        usernameGenerator.create()
+        createUsername()
 
             // Benutzer erstellen
             .then(username  => {

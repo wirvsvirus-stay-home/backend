@@ -1,5 +1,5 @@
 'use strict';
-const usernameGenerator = require('../services/username-generator');
+const usernameGenerator = require('../utils/username');
 
 module.exports = app => {
 
