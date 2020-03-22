@@ -1,5 +1,5 @@
 const db = require('../models');
-const { internalServerError } = require('../utils/http');
+const { internalServerError, notFound } = require('../utils/http');
 const usernameGenerator = require('../services/username-generator.js');
 
 module.exports = app => {
@@ -32,7 +32,6 @@ module.exports = app => {
 
             // Error-Handling
             .catch(reason => internalServerError(res, reason));
-
     });
 
     app.get('/users', function (req, res) {
@@ -68,10 +67,7 @@ module.exports = app => {
             // Benutzer zurückgeben
             .then(user => {
                 if (user === null) {
-                    res.status(404).json({
-                        status: 404,
-                        message: 'Not Found'
-                    })
+                    notFound(res);
                 } else {
                     res.json(user)
                 }
@@ -81,18 +77,39 @@ module.exports = app => {
             .catch(reason => internalServerError(res, reason))
     });
 
-    app.put('/users/:deviceid', function(req, res){
-        for(element in req.body){
-            db['user'].update({element: req.body[element]},{
-                where: {
-                    deviceId: req.params.deviceId
-                }
-            });
+    app.put('/users/:id', async (req, res) => {
+        // Benutzer laden
+        const user = await db['user'].findByPk(req.params.id);
+
+        // Pruefen ob Benutzer existiert
+        if (user === null) {
+            notFound(res);
+            return
         }
-        res.send({
-            "status": 200,
-            "message": "OK"
-        })
+
+        // ggf. Request in User setzen
+        const { score, rank, baseStatus } = req.body;
+        if (score !== undefined) {
+            user.score = score
+        }
+        if (rank !== undefined) {
+            user.rank = rank
+        }
+        if (baseStatus !== undefined) {
+            user.rank = baseStatus
+        }
+
+        // Benutzer speichern
+        user.save()
+
+            // Benutzer zurückgeben
+            .then(() => res.json({
+                status: 200,
+                message: 'OK'
+            }))
+
+            // Error-Handling
+            .catch(reason => internalServerError(res, reason));
     });
 
 };

@@ -8,6 +8,13 @@ module.exports = {
             message: 'Internal Server Error',
             reason
         })
+    },
+
+    notFound(res) {
+        res.status(404).json({
+            status: 404,
+            message: 'Not Found',
+        })
     }
 
 };
