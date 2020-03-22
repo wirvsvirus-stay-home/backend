@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  backend:
+  web:
     build: ../../
     container_name: de-cguard_backend
     networks:
@@ -9,19 +9,19 @@ services:
       - docker
     labels:
       - traefik.enable=true
-      - traefik.http.middlewares.backend-decguard-stripprefix.stripprefix.prefixes=/api/v1
-      - traefik.http.middlewares.backend-decguard-headers.headers.accessControlAllowOrigin=*
-      - traefik.http.routers.backend-decguard.entrypoints=websecure
-      - traefik.http.routers.backend-decguard.middlewares=backend-decguard-stripprefix,backend-decguard-headers
-      - traefik.http.routers.backend-decguard.rule=Host(`cguard.de`, `www.cguard.de`) && PathPrefix(`/api/v1/`)
-      - traefik.http.routers.backend-decguard.tls.certresolver=le
-      - traefik.http.services.backend-decguard.loadbalancer.server.port=3000
+      - traefik.http.middlewares.web-decguardbackend-stripprefix.stripprefix.prefixes=/api/v1
+      - traefik.http.middlewares.web-decguardbackend-headers.headers.accessControlAllowOrigin=*
+      - traefik.http.routers.web-decguardbackend.entrypoints=websecure
+      - traefik.http.routers.web-decguardbackend.middlewares=de-decguardbackend-stripprefix,web-decguardbackend-headers
+      - traefik.http.routers.web-decguardbackend.rule=Host(`cguard.de`, `www.cguard.de`) && PathPrefix(`/api/v1/`)
+      - traefik.http.routers.web-decguardbackend.tls.certresolver=le
+      - traefik.http.services.backend-decguardbackend.loadbalancer.server.port=3000
     depends_on:
       - db
     restart: always
   db:
     image: mariadb:latest
-    container_name: de-cguard_db
+    container_name: de-cguard_backend_db
     networks:
       - default
     environment:
